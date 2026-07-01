@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './GroupColumn.css'
 
-export default function GroupColumn({ group, imageUrl, rating, hasImage, onRate, points, style }) {
+export default function GroupColumn({ group, imageUrl, rating, hasImage, onRate, onBonus, points, currentBonus, style }) {
   const [lightboxOpen, setLightboxOpen] = useState(false)
 
   function handleImageClick() {
@@ -26,6 +26,7 @@ export default function GroupColumn({ group, imageUrl, rating, hasImage, onRate,
               <div className="hover-buttons">
                 <button className="btn-rate green" onClick={(e) => { e.stopPropagation(); onRate('green') }}>✓</button>
                 <button className="btn-rate red" onClick={(e) => { e.stopPropagation(); onRate('red') }}>✗</button>
+                <button className="btn-rate bonus" onClick={(e) => { e.stopPropagation(); onBonus(1) }} onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); onBonus(-1) }}>★</button>
               </div>
               {lightboxOpen && (
                 <div className="lightbox-overlay" onClick={(e) => { e.stopPropagation(); setLightboxOpen(false) }}>
@@ -43,7 +44,7 @@ export default function GroupColumn({ group, imageUrl, rating, hasImage, onRate,
       </div>
       <div className="team-section">
         <div className="team-name">{group}</div>
-        <div className="team-points">({points})</div>
+        <div className="team-points">({points}){currentBonus !== 0 ? <span className="bonus"> {currentBonus > 0 ? `+${currentBonus}` : currentBonus}</span> : ''}</div>
       </div>
     </div>
   )
